@@ -27,31 +27,34 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
   
-    const loginForm = document.getElementById('login-form');
-    if (loginForm) {
-        loginForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-  
-            fetch(`${serverBaseUrl}/index`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    window.location.href = '/protected.html'; 
-                } else {
-                    alert('Login failed: ' + data.message);
-                }
-            })
-            .catch(error => alert('Error during login: ' + error));
-        });
-    }
+   // Handling login form submission
+   const loginForm = document.getElementById('login-form');
+   if (loginForm) {
+       loginForm.addEventListener('submit', function(event) {
+           event.preventDefault();
+           const email = document.getElementById('email').value;
+           const password = document.getElementById('password').value;
+     
+           fetch(`${serverBaseUrl}/index`, {
+               method: 'POST',
+               headers: {
+                   'Content-Type': 'application/json',
+               },
+               body: JSON.stringify({ email, password }),
+           })
+           .then(response => response.json())
+           .then(data => {
+               if (data.success) {
+                   // Here you store the email or session token
+                   sessionStorage.setItem('userEmail', email); // Store user email in session
+                   window.location.href = 'protected.html'; 
+               } else {
+                   alert('Login failed: ' + data.message);
+               }
+           })
+           .catch(error => alert('Error during login: ' + error));
+       });
+   }
 
     const isProtectedPage = window.location.pathname.includes('protected');
     if (isProtectedPage) {
