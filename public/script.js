@@ -82,28 +82,4 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
-
-    const quoteForm = document.getElementById('quote-form');
-    if (quoteForm) {
-        quoteForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            const inputs = document.getElementById('inputs').value;
-            const token = sessionStorage.getItem('token');
-  
-            fetch(`${serverBaseUrl}/generate-quote`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ inputs }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Handle response data
-                console.log(data);
-            })
-            .catch(error => alert('Error generating quote: ' + error));
-        });
-    }
 });
