@@ -58,35 +58,27 @@ document.addEventListener('DOMContentLoaded', function() {
        });
    }
 
-    // Check if the current page is the protected page
-    const isProtectedPage = window.location.pathname.includes('protected');
-    if (isProtectedPage) {
-        const token = sessionStorage.getItem('token');
-        if (!token) {
-            // Redirect if no token is found
-            window.location.href = '/index.html';
-        } else {
-            // Check session validity
-            fetch(`${serverBaseUrl}/check-session`, {
-                method: 'GET',
-                credentials: 'include',
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (!data.success) {
-                    // Redirect if session check fails
-                    window.location.href = '/index.html';
-                } else {
-                    // Session is valid, now display API calls
-                    displayApiCallsMade();
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                window.location.href = '/index.html';
-            });
-        }
-    }
+   const isProtectedPage = window.location.pathname.includes('protected');
+   if (isProtectedPage) {
+       fetch(`${serverBaseUrl}/check-session`, {
+           method: 'GET',
+           credentials: 'include', // Ensures cookies are included with the request
+       })
+       .then(response => response.json())
+       .then(data => {
+           if (!data.success) {
+               // Redirect if session check fails
+               window.location.href = '/index.html';
+           } else {
+               // Session is valid, continue to display the protected page and any specific user data like API calls
+               displayApiCallsMade();
+           }
+       })
+       .catch(error => {
+           console.error('Error:', error);
+           window.location.href = '/index.html';
+       });
+   }
 });
 
 // Function to fetch and display the user's API call count
