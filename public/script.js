@@ -58,12 +58,15 @@ document.addEventListener('DOMContentLoaded', function() {
        });
    }
 
+    // Check if the current page is the protected page
     const isProtectedPage = window.location.pathname.includes('protected');
     if (isProtectedPage) {
         const token = sessionStorage.getItem('token');
         if (!token) {
+            // Redirect if no token is found
             window.location.href = '/index.html';
         } else {
+            // Check session validity
             fetch(`${serverBaseUrl}/check-session`, {
                 method: 'GET',
                 credentials: 'include',
@@ -71,7 +74,11 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (!data.success) {
+                    // Redirect if session check fails
                     window.location.href = '/index.html';
+                } else {
+                    // Session is valid, now display API calls
+                    displayApiCallsMade();
                 }
             })
             .catch(error => {
@@ -81,3 +88,29 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+// Function to fetch and display the user's API call count
+function displayApiCallsMade() {
+    const userEmail = sessionStorage.getItem('userEmail');
+    if (!userEmail) {
+        console.error('User email not found in sessionStorage.');
+        return;
+    }
+
+    // Fetch the API call count from the server using the userEmail
+    fetch(`${serverBaseUrl}/api-calls-count?email=${encodeURIComponent(userEmail)}`, {
+        method: 'GET',
+        credentials: 'include'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success && document.getElementById('apiCallsMade')) {
+            document.getElementById('apiCallsMade').textContent = data.apiCallsMade;
+        } else {
+            console.error('Failed to fetch API call count:', data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching API call count:', error);
+    });
+}
