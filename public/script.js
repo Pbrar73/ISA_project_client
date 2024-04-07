@@ -119,26 +119,26 @@ document.addEventListener('DOMContentLoaded', function() {
    }
 
    const isProtectedPage = window.location.pathname.includes('protected');
-   if (isProtectedPage) {
-       // Directly check session validity with the server
-       fetch(`${serverBaseUrl}/check-session`, {
-           method: 'GET',
-           credentials: 'include', // Ensures cookies are sent with the request
-       })
-       .then(response => {
-           if (response.ok) {
-               // Session is valid, proceed to display protected content
-               displayApiCallsMade();
-           } else {
-               // Session check failed, redirect to login page
-               window.location.href = '/index.html';
-           }
-       })
-       .catch(error => {
-           console.error('Error:', error);
-           window.location.href = '/index.html';
-       });
-   }
+    if (isProtectedPage) {
+        // Directly check session validity with the server
+        fetch(`${serverBaseUrl}/check-session`, {
+            method: 'GET',
+            credentials: 'include', // Ensures cookies are sent with the request
+        })
+        .then(response => {
+            if (response.ok) {
+                // Session is valid, proceed to display protected content
+                displayApiCallsMade();
+            } else {
+                // Session check failed, redirect to login page
+                window.location.href = '/index.html';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            window.location.href = '/index.html';
+        });
+    }
 });
 
 // Function to fetch and display the user's API call count
@@ -167,28 +167,5 @@ function displayApiCallsMade() {
    });
 }
 
-// Function to fetch and display the user's API call count
-function displayApiCallsMade() {
-   const userEmail = sessionStorage.getItem('userEmail');
-   if (!userEmail) {
-       console.error('User email not found in sessionStorage.');
-       return;
-   }
 
-   // Fetch the API call count from the server using the userEmail
-   fetch(`${serverBaseUrl}/api-calls-count?email=${encodeURIComponent(userEmail)}`, {
-       method: 'GET',
-       credentials: 'include'
-   })
-   .then(response => response.json())
-   .then(data => {
-       if (data.success && document.getElementById('apiCallsMade')) {
-           document.getElementById('apiCallsMade').textContent = data.apiCallsMade;
-       } else {
-           console.error('Failed to fetch API call count:', data.message);
-       }
-   })
-   .catch(error => {
-       console.error('Error fetching API call count:', error);
-   });
-}});
+});
