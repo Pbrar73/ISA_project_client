@@ -60,17 +60,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
    const isProtectedPage = window.location.pathname.includes('protected');
    if (isProtectedPage) {
+       // Directly check session validity with the server, no need to check sessionStorage for a token
        fetch(`${serverBaseUrl}/check-session`, {
            method: 'GET',
            credentials: 'include', // Ensures cookies are included with the request
        })
-       .then(response => response.json())
-       .then(data => {
-           if (!data.success) {
-               // Redirect if session check fails
+       .then(response => {
+           if (!response.ok) {
+               // Redirect if session check fails (e.g., response status is not 2xx)
                window.location.href = '/index.html';
            } else {
-               // Session is valid, continue to display the protected page and any specific user data like API calls
+               // Session is valid, proceed to display protected content
                displayApiCallsMade();
            }
        })
