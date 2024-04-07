@@ -9,7 +9,6 @@ document.getElementById('quoteForm').addEventListener('submit', async function(e
     // Include the token in the request headers
     const headers = {
         'Content-Type': 'application/json', 
-        'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
     };
 
     const data = { inputs }; // Payload does not need the userEmail anymore
@@ -17,6 +16,7 @@ document.getElementById('quoteForm').addEventListener('submit', async function(e
     try {
         const response = await fetch('https://milestone1server-4a2e0b56cbf7.herokuapp.com/generate-quote', {
             method: 'POST',
+            credentials: 'include',
             headers: headers, // Use the headers variable
             body: JSON.stringify(data), 
         });
