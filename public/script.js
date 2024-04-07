@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
            .then(data => {
                if (data.success) {
                    // Store the JWT token received from the server
+                   sessionStorage.setItem('token', data.token);
                    sessionStorage.setItem('userEmail', email);
                    window.location.href = 'protected.html'; 
                } else {
@@ -75,6 +76,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ email, password }),
+    const isProtectedPage = window.location.pathname.includes('protected');
+    if (isProtectedPage) {
+        const token = sessionStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/index.html';
+        } else {
+            fetch(`${serverBaseUrl}/check-session`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                credentials: 'include'
             })
             .then(response => response.json())
             .then(data => {
