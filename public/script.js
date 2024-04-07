@@ -83,26 +83,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Function to fetch and display the user's API call count
 function displayApiCallsMade() {
-    const userEmail = sessionStorage.getItem('userEmail');
-    if (!userEmail) {
-        console.error('User email not found in sessionStorage.');
-        return;
-    }
+   const userEmail = sessionStorage.getItem('userEmail');
+   if (!userEmail) {
+       console.error('User email not found in sessionStorage.');
+       return;
+   }
 
-    // Fetch the API call count from the server using the userEmail
-    fetch(`${serverBaseUrl}/api-calls-count?email=${encodeURIComponent(userEmail)}`, {
-        method: 'GET',
-        credentials: 'include'
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success && document.getElementById('apiCallsMade')) {
-            document.getElementById('apiCallsMade').textContent = data.apiCallsMade;
-        } else {
-            console.error('Failed to fetch API call count:', data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error fetching API call count:', error);
-    });
+   // Fetch the API call count from the server using the userEmail
+   fetch(`${serverBaseUrl}/api-calls-count?email=${encodeURIComponent(userEmail)}`, {
+       method: 'GET',
+       credentials: 'include'
+   })
+   .then(response => response.json())
+   .then(data => {
+       if (data.success && document.getElementById('apiCallsMade')) {
+           document.getElementById('apiCallsMade').textContent = data.apiCallsMade;
+       } else {
+           console.error('Failed to fetch API call count:', data.message);
+       }
+   })
+   .catch(error => {
+       console.error('Error fetching API call count:', error);
+   });
 }
