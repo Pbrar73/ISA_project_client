@@ -3,9 +3,6 @@ document.getElementById('quoteForm').addEventListener('submit', async function(e
 
     const inputs = document.getElementById('inputs').value;
 
-    // Retrieve the JWT token from sessionStorage
-    const token = sessionStorage.getItem('token');
-
     // Include the token in the request headers
     const headers = {
         'Content-Type': 'application/json', 

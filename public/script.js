@@ -47,7 +47,6 @@ document.addEventListener('DOMContentLoaded', function() {
            .then(response => response.json())
            .then(data => {
                if (data.success) {
-                   // Store the JWT token received from the server
                    sessionStorage.setItem('userEmail', email);
                    window.location.href = 'protected.html'; 
                } else {
