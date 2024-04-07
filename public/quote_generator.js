@@ -1,18 +1,23 @@
-// quote_generator.js
 document.getElementById('quoteForm').addEventListener('submit', async function(e) {
     e.preventDefault(); 
 
     const inputs = document.getElementById('inputs').value;
-    // Retrieve the user's email or session token from sessionStorage
-    const userEmail = sessionStorage.getItem('userEmail'); // Or use getSessionToken() if using tokens
-    const data = { inputs, userEmail }; // Include it in the request payload
+
+    // Retrieve the JWT token from sessionStorage
+    const token = sessionStorage.getItem('token');
+
+    // Include the token in the request headers
+    const headers = {
+        'Content-Type': 'application/json', 
+        'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
+    };
+
+    const data = { inputs }; // Payload does not need the userEmail anymore
 
     try {
         const response = await fetch('https://milestone1server-4a2e0b56cbf7.herokuapp.com/generate-quote', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json', 
-            },
+            headers: headers, // Use the headers variable
             body: JSON.stringify(data), 
         });
 
