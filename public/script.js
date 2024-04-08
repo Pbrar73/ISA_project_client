@@ -57,26 +57,22 @@ document.addEventListener('DOMContentLoaded', function() {
        });
    }
 
-    const isProtectedPage = window.location.pathname.includes('protected');
-    if (isProtectedPage) {
-        const token = sessionStorage.getItem('token');
-        if (!token) {
-            window.location.href = '/index.html';
-        } else {
-            fetch(`${serverBaseUrl}/check-session`, {
-                method: 'GET',
-                credentials: 'include',
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (!data.success) {
-                    window.location.href = '/index.html';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                window.location.href = '/index.html';
-            });
-        }
-    }
+   const isProtectedPage = window.location.pathname.includes('protected');
+   if (isProtectedPage) {
+       fetch(`${serverBaseUrl}/check-session`, {
+           method: 'GET',
+           credentials: 'include', 
+       })
+       .then(response => response.json())
+       .then(data => {
+           if (!data.success) {
+               window.location.href = '/index.html';
+           }
+       })
+       .catch(error => {
+           console.error('Error:', error);
+           window.location.href = '/index.html';
+       });
+   }
+   
 });
