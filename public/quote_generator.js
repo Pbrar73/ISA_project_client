@@ -26,7 +26,7 @@ document.getElementById('quoteForm').addEventListener('submit', async function(e
 
         if (Array.isArray(responseData) && responseData.length > 0 && responseData[0].generated_text) {
             let words = responseData[0].generated_text.split(' '); 
-            words.shift(); // Assuming you want to remove the first word for some reason
+            words.shift(); 
             let generatedQuote = words.join(' '); 
 
             document.getElementById('quote').textContent = generatedQuote;
