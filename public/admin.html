@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <script src="script.js" defer></script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Admin Page</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>API Calls Made</th>
+            </tr>
+        </thead>
+        <tbody id="users-table-body">
+            <!-- User data will be dynamically inserted here -->
+        </tbody>
+    </table>
+</body>
+</html>

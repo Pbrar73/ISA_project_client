@@ -75,4 +75,32 @@ document.addEventListener('DOMContentLoaded', function() {
        });
    }
    
+ // Fetch and display users' API information on admin page
+ const isAdminPage = window.location.pathname.includes('admin');
+ if (isAdminPage) {
+     fetch(`${serverBaseUrl}/admin/users`, {
+         method: 'GET',
+         credentials: 'include',
+         headers: {
+             'Content-Type': 'application/json',
+         },
+     })
+     .then(response => response.json())
+     .then(data => {
+         if (data.success) {
+             const usersTableBody = document.getElementById('users-table-body');
+             data.users.forEach(user => {
+                 const row = document.createElement('tr');
+                 row.innerHTML = `
+                     <td>${user.email}</td>
+                     <td>${user.api_calls_made}</td>
+                 `;
+                 usersTableBody.appendChild(row);
+             });
+         } else {
+             alert('Failed to fetch users\' API information: ' + data.message);
+         }
+     })
+     .catch(error => alert('Error fetching users\' API information: ' + error));
+ }
 });
