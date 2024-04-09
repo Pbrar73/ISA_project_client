@@ -48,7 +48,11 @@ document.addEventListener('DOMContentLoaded', function() {
            .then(data => {
                if (data.success) {
                    sessionStorage.setItem('userEmail', email);
-                   window.location.href = 'protected.html'; 
+                   if (data.is_admin) {
+                    window.location.href = 'admin.html';
+                } else {
+                    window.location.href = 'protected.html';
+                } 
                } else {
                    alert('Login failed: ' + data.message);
                }
