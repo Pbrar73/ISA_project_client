@@ -1,38 +1,54 @@
 document.getElementById('quoteForm').addEventListener('submit', async function(e) {
-    e.preventDefault(); 
+    e.preventDefault();
 
     const inputs = document.getElementById('inputs').value;
-
-    // Include the token in the request headers
     const headers = {
-        'Content-Type': 'application/json', 
+        'Content-Type': 'application/json',
     };
-
-    const data = { inputs }; // Payload does not need the userEmail anymore
+    const data = { inputs };
 
     try {
-        const response = await fetch('https://milestone1server-4a2e0b56cbf7.herokuapp.com/generate-quote', {
+        // Attempt to generate the quote
+        const quoteResponse = await fetch('https://milestone1server-4a2e0b56cbf7.herokuapp.com/generate-quote', {
             method: 'POST',
             credentials: 'include',
-            headers: headers, // Use the headers variable
-            body: JSON.stringify(data), 
+            headers: headers,
+            body: JSON.stringify(data),
         });
 
-        if (!response.ok) {
+        if (!quoteResponse.ok) {
             throw new Error('Problem generating quote');
         }
 
-        const responseData = await response.json();
+        const quoteData = await quoteResponse.json();
 
-        if (Array.isArray(responseData) && responseData.length > 0 && responseData[0].generated_text) {
-            let words = responseData[0].generated_text.split(' '); 
-            words.shift(); 
-            let generatedQuote = words.join(' '); 
+        // Process the quote response
+        if (Array.isArray(quoteData) && quoteData.length > 0 && quoteData[0].generated_text) {
+            let words = quoteData[0].generated_text.split(' ');
+            words.shift();
+            let generatedQuote = words.join(' ');
 
             document.getElementById('quote').textContent = generatedQuote;
         } else {
-            console.error('Received unexpected response structure:', responseData);
+            console.error('Received unexpected response structure:', quoteData);
             document.getElementById('quote').textContent = 'Received unexpected response. Please try again.';
+        }
+
+        // Check the API usage
+        const usageResponse = await fetch('https://milestone1server-4a2e0b56cbf7.herokuapp.com/api-usage', {
+            method: 'GET',
+            credentials: 'include',
+            headers: headers,
+        });
+
+        if (usageResponse.ok) {
+            const usageData = await usageResponse.json();
+            if (usageData.apiCallsMade > 20) {
+                // Show a warning message about exceeding the free limit
+                alert('You have exceeded your free API call limit of 20. You may continue using the service, but please be aware that you have surpassed the free quota.');
+            }
+        } else {
+            console.error('Failed to fetch API usage data');
         }
     } catch (error) {
         console.error('Error:', error);
