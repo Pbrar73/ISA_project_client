@@ -179,7 +179,7 @@ document.addEventListener('click', function(event) {
     if (event.target.classList.contains('delete-user-btn')) {
         const userId = event.target.getAttribute('data-user-id');
         if (userId) {
-            fetch(`${serverBaseUrl}/users/${userId}`, {
+            fetch(`${serverBaseUrl}/admin/users/${userId}`, {
                 method: 'DELETE',
                 credentials: 'include',
                 headers: {
