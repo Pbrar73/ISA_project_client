@@ -107,4 +107,39 @@ document.addEventListener('DOMContentLoaded', function() {
      })
      .catch(error => alert('Error fetching users\' API information: ' + error));
  }
+
+ function fetchAndDisplayApiUsage() {
+    const serverBaseUrl = 'https://milestone1server-4a2e0b56cbf7.herokuapp.com';
+    // Assuming your endpoint to fetch API usage is '/api-usage'
+    fetch(`${serverBaseUrl}/api-usage`, {
+        method: 'GET',
+        credentials: 'include', // Necessary for cookies to be sent
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to fetch API usage data');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success && data.apiCallsMade !== undefined) {
+            document.getElementById('apiCallsMade').textContent = data.apiCallsMade;
+        } else {
+            console.error('Failed to load API usage data:', data.message);
+            // Optionally handle this error, e.g., by showing a message to the user
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching API usage data:', error);
+        // Optionally handle this fetch error
+    });
+}
+
+// Only run fetchAndDisplayApiUsage if on the protected page
+if (window.location.pathname.includes('protected.html')) {
+    document.addEventListener('DOMContentLoaded', fetchAndDisplayApiUsage);
+}
 });
