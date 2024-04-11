@@ -178,6 +178,7 @@ if (emailUpdateForm) {
 document.addEventListener('click', function(event) {
     if (event.target.classList.contains('delete-user-btn')) {
         const userId = event.target.getAttribute('data-user-id');
+        console.log('Attempting to delete user with ID:', userId); // Add this to check
         if (userId) {
             fetch(`${serverBaseUrl}/admin/users/${userId}`, {
                 method: 'DELETE',
