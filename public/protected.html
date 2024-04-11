@@ -7,9 +7,17 @@
     <script src="./script.js" defer></script>
 </head>
 <body>
-    <h2>Welcome to the Protected Page</h2>
-    <p>This page is protected. Only logged-in users can access it.</p>
-    <p>API Calls Made: <span id="apiCallsMade">0</span></p>
-    <a href="/quote_generator.html" class="button">Go to Quote Generator</a>
+    <h2>Welcome to Your Profile</h2>
+    <div id="apiUsageContainer">
+        <p>Your API Calls Made: <span id="apiCallsMade">0</span></p>
+    </div>
+    <div id="updateEmailFormContainer">
+        <h3>Update Your Email</h3>
+        <form id="email-update-form">
+            <input type="email" id="new-email" required placeholder="Enter your new email">
+            <button type="submit">Update Email</button>
+        </form>
+    </div>
+    <a href="/quote_generator.html">Go to Quote Generator</a>
 </body>
 </html>

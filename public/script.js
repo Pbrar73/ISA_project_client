@@ -91,7 +91,6 @@ document.addEventListener('DOMContentLoaded', function() {
      })
      .then(response => {
         if (response.status === 401 || response.status === 403) {
-            // User is unauthorized or not an admin; redirect to login page
             window.location.href = 'index.html';
             return null; // Prevent further processing
         }
@@ -103,10 +102,13 @@ document.addEventListener('DOMContentLoaded', function() {
              data.users.forEach(user => {
                  const row = document.createElement('tr');
                  row.innerHTML = `
-                     <td>${user.email}</td>
-                     <td>${user.api_calls_made}</td>
-                 `;
-                 usersTableBody.appendChild(row);
+                    <td>${user.email}</td>
+                    <td>${user.api_calls_made}</td>
+                    <td>
+                        <button class="delete-user-btn" data-user-id="${user.id}">Delete User</button>
+                    </td>
+                `;
+                usersTableBody.appendChild(row);
              });
          } else {
              alert('Failed to fetch users\' API information: ' + data.message);
@@ -114,6 +116,34 @@ document.addEventListener('DOMContentLoaded', function() {
      })
      .catch(error => alert('Must be admin to access this page.'));
  }
+
+ // Handling email update form submission
+const emailUpdateForm = document.getElementById('email-update-form');
+if (emailUpdateForm) {
+    emailUpdateForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const newEmail = document.getElementById('new-email').value;
+        
+        fetch(`${serverBaseUrl}/users/email`, {
+            method: 'PUT',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ newEmail }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Email updated successfully.');
+            } else {
+                alert('Email update failed: ' + data.message);
+            }
+        })
+        .catch(error => alert('Error updating email: ' + error));
+    });
+}
+
 
  function fetchAndDisplayApiUsage() {
     const serverBaseUrl = 'https://milestone1server-4a2e0b56cbf7.herokuapp.com';
@@ -144,6 +174,26 @@ document.addEventListener('DOMContentLoaded', function() {
         // Optionally handle this fetch error
     });
 }
+
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('delete-user-btn')) {
+        const userId = event.target.getAttribute('data-user-id');
+        fetch(`${serverBaseUrl}/users/${userId}`, {
+            method: 'DELETE',
+            credentials: 'include',
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('User successfully deleted');
+                window.location.reload(); // Reload the page to reflect changes
+            } else {
+                alert('Failed to delete user');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+});
 
 if (window.location.href.toLowerCase().endsWith('/protected.html')) {
     fetchAndDisplayApiUsage();
