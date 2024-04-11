@@ -89,8 +89,15 @@ document.addEventListener('DOMContentLoaded', function() {
              'Content-Type': 'application/json',
          },
      })
-     .then(response => response.json())
-     .then(data => {
+     .then(response => {
+        if (response.status === 401 || response.status === 403) {
+            // User is unauthorized or not an admin; redirect to login page
+            window.location.href = 'index.html';
+            return null; // Prevent further processing
+        }
+        return response.json(); // Continue with processing the response if authorized
+    })     
+    .then(data => {
          if (data.success) {
              const usersTableBody = document.getElementById('users-table-body');
              data.users.forEach(user => {
