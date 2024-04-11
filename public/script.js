@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => alert('Error during registration: ' + error));
         });
     }
-  
    const loginForm = document.getElementById('login-form');
    if (loginForm) {
        loginForm.addEventListener('submit', function(event) {
