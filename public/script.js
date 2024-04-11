@@ -138,8 +138,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 }
 
-// Only run fetchAndDisplayApiUsage if on the protected page
-if (window.location.pathname.includes('protected.html')) {
+if (window.location.href.toLowerCase().includes('protected.html')) {
     document.addEventListener('DOMContentLoaded', fetchAndDisplayApiUsage);
 }
+
 });
