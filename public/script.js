@@ -28,7 +28,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
   
-   // Handling login form submission
    const loginForm = document.getElementById('login-form');
    if (loginForm) {
        loginForm.addEventListener('submit', function(event) {
@@ -79,7 +78,6 @@ document.addEventListener('DOMContentLoaded', function() {
        });
    }
    
- // Fetch and display users' API information on admin page
  const isAdminPage = window.location.pathname.includes('admin');
  if (isAdminPage) {
      fetch(`${serverBaseUrl}/admin/users`, {
@@ -92,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
      .then(response => {
         if (response.status === 401 || response.status === 403) {
             window.location.href = 'index.html';
-            return null; // Prevent further processing
+            return null;
         }
         return response.json(); 
     })     
@@ -149,7 +147,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 }
 
- // Handling email update form submission
 const emailUpdateForm = document.getElementById('email-update-form');
 if (emailUpdateForm) {
     emailUpdateForm.addEventListener('submit', function(event) {
@@ -179,10 +176,9 @@ if (emailUpdateForm) {
 
  function fetchAndDisplayApiUsage() {
     const serverBaseUrl = 'https://milestone1server-4a2e0b56cbf7.herokuapp.com';
-    // Assuming your endpoint to fetch API usage is '/api-usage'
     fetch(`${serverBaseUrl}/api-usage`, {
         method: 'GET',
-        credentials: 'include', // Necessary for cookies to be sent
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -198,12 +194,10 @@ if (emailUpdateForm) {
             document.getElementById('apiCallsMade').textContent = data.apiCallsMade;
         } else {
             console.error('Failed to load API usage data:', data.message);
-            // Optionally handle this error, e.g., by showing a message to the user
         }
     })
     .catch(error => {
         console.error('Error fetching API usage data:', error);
-        // Optionally handle this fetch error
     });
 }
 
