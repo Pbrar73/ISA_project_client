@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
              alert('Failed to fetch users\' API information: ' + data.message);
          }
      })
-     .catch(error => alert('Error fetching users\' API information: ' + error));
+     .catch(error => alert('Must be admin to access this page.'));
  }
 
  function fetchAndDisplayApiUsage() {
