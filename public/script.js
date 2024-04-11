@@ -203,5 +203,4 @@ if (emailUpdateForm) {
 if (window.location.href.toLowerCase().endsWith('/protected.html')) {
     fetchAndDisplayApiUsage();
 }
-
 });
