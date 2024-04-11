@@ -178,22 +178,35 @@ if (emailUpdateForm) {
 document.addEventListener('click', function(event) {
     if (event.target.classList.contains('delete-user-btn')) {
         const userId = event.target.getAttribute('data-user-id');
-        fetch(`${serverBaseUrl}/users/${userId}`, {
-            method: 'DELETE',
-            credentials: 'include',
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('User successfully deleted');
-                window.location.reload(); // Reload the page to reflect changes
-            } else {
-                alert('Failed to delete user');
-            }
-        })
-        .catch(error => console.error('Error:', error));
+        if (userId) {
+            fetch(`${serverBaseUrl}/users/${userId}`, {
+                method: 'DELETE',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to delete user');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    alert('User successfully deleted');
+                    window.location.reload();
+                } else {
+                    alert('Failed to delete user: ' + data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        } else {
+            console.error('User ID is undefined');
+        }
     }
 });
+
 
 if (window.location.href.toLowerCase().endsWith('/protected.html')) {
     fetchAndDisplayApiUsage();
