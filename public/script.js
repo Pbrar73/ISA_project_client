@@ -138,8 +138,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 }
 
-if (window.location.href.toLowerCase().includes('protected.html')) {
-    document.addEventListener('DOMContentLoaded', fetchAndDisplayApiUsage);
+if (window.location.href.toLowerCase().endsWith('/protected.html')) {
+    fetchAndDisplayApiUsage();
 }
 
 });
