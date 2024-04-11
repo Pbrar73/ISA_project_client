@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.href = 'index.html';
             return null; // Prevent further processing
         }
-        return response.json(); // Continue with processing the response if authorized
+        return response.json(); 
     })     
     .then(data => {
          if (data.success) {
@@ -115,7 +115,39 @@ document.addEventListener('DOMContentLoaded', function() {
          }
      })
      .catch(error => alert('Must be admin to access this page.'));
- }
+
+     document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('delete-user-btn')) {
+            const userId = event.target.getAttribute('data-user-id');
+            if (userId) {
+                fetch(`${serverBaseUrl}/admin/users/${userId}`, {
+                    method: 'DELETE',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to delete user');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        alert('User successfully deleted');
+                        window.location.reload();
+                    } else {
+                        alert('Failed to delete user: ' + data.message);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            } else {
+                console.error('User ID is undefined');
+            }
+        }
+    });
+}
 
  // Handling email update form submission
 const emailUpdateForm = document.getElementById('email-update-form');
@@ -174,40 +206,6 @@ if (emailUpdateForm) {
         // Optionally handle this fetch error
     });
 }
-
-document.addEventListener('click', function(event) {
-    if (event.target.classList.contains('delete-user-btn')) {
-        const userId = event.target.getAttribute('data-user-id');
-        console.log('Attempting to delete user with ID:', userId); // Add this to check
-        if (userId) {
-            fetch(`${serverBaseUrl}/admin/users/${userId}`, {
-                method: 'DELETE',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to delete user');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    alert('User successfully deleted');
-                    window.location.reload();
-                } else {
-                    alert('Failed to delete user: ' + data.message);
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        } else {
-            console.error('User ID is undefined');
-        }
-    }
-});
-
 
 if (window.location.href.toLowerCase().endsWith('/protected.html')) {
     fetchAndDisplayApiUsage();
